@@ -3,7 +3,7 @@ import express from 'express'
 import User from '../models/userModel.js'
 import expressAsyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
-import { generateToken, isAuth } from '../misc.js';
+import { generateToken } from '../misc.js';
 
 const userRouter = express.Router()
 
@@ -15,15 +15,14 @@ userRouter.post(
             name: req.body.name,
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 8),
-            height: req.body.height,
-            weight: req.body.weight,
+            
         });
         const newUser = await user.save();
         res.send({
             _id: newUser._id,
             name: newUser.name,
             email: newUser.email,
-            isAdmin: newUser.isAdmin,
+            
             token: generateToken(newUser),
         });
     })
@@ -39,9 +38,7 @@ userRouter.post(
                     _id: user._id,
                     name: user.name,
                     email: user.email,
-                    isAdmin: user.isAdmin,
-                    height: user.height,
-                    weight: user.weight,
+                    
                     token: generateToken(user),
                 });
                 return;
